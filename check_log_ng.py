@@ -745,6 +745,7 @@ class LogChecker(object):
             line = fileobj.readline()
             fileobj.close()
         state, message = line.split("\t", 1)
+        message = "{} (use cache)".format(message)
         _debug("cache: state={0}, message='{1}'".format(state, message))
         return int(state), message
 
