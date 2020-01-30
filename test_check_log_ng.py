@@ -24,6 +24,7 @@ class LogCheckerTestCase(unittest.TestCase):
     # Class constant
     MESSAGE_OK = "OK - No matches found."
     MESSAGE_WARNING_ONE = "WARNING: Found 1 lines (limit=1/0): {0} at {1}"
+    MESSAGE_WARNING_ONE_WITH_CACHE = "{} (use cache)".format(MESSAGE_WARNING_ONE)
     MESSAGE_WARNING_ONE_WITH_QUIET = "WARNING: Found 1 lines (limit=1/0, QUIET): at {0}"
     MESSAGE_WARNING_ONE_WITH_HEADER = "WARNING: Found 1 lines (limit=1/0, HEADER): {0} at {1}"
     MESSAGE_WARNING_TWO = "WARNING: Found 2 lines (limit=1/0): {0},{1} at {2}"
@@ -1039,7 +1040,7 @@ class LogCheckerTestCase(unittest.TestCase):
         self.assertEqual(log.get_state(), LogChecker.STATE_WARNING)
         self.assertEqual(
             log.get_message(),
-            self.MESSAGE_WARNING_ONE.format(line, self.logfile))
+            self.MESSAGE_WARNING_ONE_WITH_CACHE.format(line, self.logfile))
 
         log._remove_cache(cachefile)
 
@@ -1114,7 +1115,7 @@ class LogCheckerTestCase(unittest.TestCase):
         self.assertEqual(log.get_state(), LogChecker.STATE_WARNING)
         self.assertEqual(
             log.get_message(),
-            self.MESSAGE_WARNING_ONE.format(line, self.logfile))
+            self.MESSAGE_WARNING_ONE_WITH_CACHE.format(line, self.logfile))
 
         log._remove_cache(cachefile)
 
