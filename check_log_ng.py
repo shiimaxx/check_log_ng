@@ -35,6 +35,7 @@ import hashlib
 import base64
 import fcntl
 import warnings
+from datetime import datetime
 
 FALLBACK_PATH = "/usr/local/hb-agent/bin"
 
@@ -745,9 +746,18 @@ class LogChecker(object):
             line = fileobj.readline()
             fileobj.close()
         state, message = line.split("\t", 1)
-        message = "{} (use cache)".format(message)
+        cache_created_at = self._get_cache_created_at(cachefile)
+        message = "{0} (use cache created at {1})".format(message, cache_created_at)
         _debug("cache: state={0}, message='{1}'".format(state, message))
         return int(state), message
+
+    def _get_cache_created_at(self, cachefile):
+        """Get the cache's created time
+
+        Returns:
+            string representing the in ISO 8601 format (YYYY-MM-DDThh:mm:ss.ffffff).
+        """
+        return datetime.fromtimestamp(os.stat(cachefile).st_mtime).isoformat()
 
     def _update_cache(self, cachefile):
         """Update the cache."""
